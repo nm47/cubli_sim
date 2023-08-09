@@ -1,0 +1,28 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 30
+    use_sim_time: true
+
+    flywheel_velocity_controller:
+      type: velocity_controllers/JointGroupVelocityController
+
+    joint_state_controller:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+flywheel_velocity_controller:
+  ros__parameters:
+    publish_rate: 60
+    joints:
+      - x_shaft_hub_to_motor
+      - y_shaft_hub_to_motor
+      - z_shaft_hub_to_motor
+    gains:
+      x_shaft_hub_to_motor: {p: 100, i: 1, d: 100}
+      y_shaft_hub_to_motor: {p: 100, i: 1, d: 100}
+      z_shaft_hub_to_motor: {p: 100, i: 1, d: 100}
+
+
+joint_state_controller:
+  ros__parameters:
+    publish_rate: 60
+

@@ -1,0 +1,55 @@
+<?xml version="1.0" ?>
+<robot name="cubli" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:include filename="$(find cubli_description)/model/xacro/materials.xacro"/>
+  <xacro:include filename="$(find cubli_description)/model/xacro/axis.xacro"/>
+
+  <link name="dummy"/>
+  <link name="base_link">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0 0.0 0.075"/>
+      <mass value=".1717"/>
+      <inertia ixx="0.00064387" ixy="-0.00000000" ixz="0.00000000" iyy="0.00064389" iyz="0.00000000" izz="0.00064389"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0.0 0.0 0.075"/>
+      <geometry>
+        <mesh filename="package://cubli_description/model/meshes/frame.stl"/>
+      </geometry>
+      <material name="silver"/>
+      <material name="Gazebo/Silver"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.0 0.0 0.075"/>
+      <geometry>
+        <box size="0.15 0.15 0.15"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="dummy_joint" type="fixed">
+    <parent link="dummy"/>
+    <child link="base_link"/>
+  </joint>
+
+  <link name="imu">
+    <visual>
+      <origin rpy="0 0 0" xyz="0.0 0.0 0.075"/>
+      <geometry>
+        <box size="0.015 0.015 0.015"/>
+      </geometry>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0 0.0 0.075"/>
+      <mass value=".003"/>
+      <inertia ixx="0.00004387" ixy="-0.00000000" ixz="0.00000000" iyy="0.00004389" iyz="0.00000000" izz="0.00004389"/>
+    </inertial>
+  </link>
+
+  <joint name="imu_to_base_link" type="fixed">
+    <parent link="base_link"/>
+    <child link="imu"/>
+  </joint>
+  <xacro:axis prefix="x" xyz="0.0539 0.0 0.075" rpy="0 ${-pi/2} ${pi}"/>
+  <xacro:axis prefix="y" xyz="0 -0.0539 0.075" rpy="${pi/2} ${pi} 0"/>
+  <xacro:axis prefix="z" xyz="0.0 0 0.0211" rpy="${pi} 0 ${pi/2}"/>
+  <!-- DISTANCES TO BASE_LINK FROM MOTOR MOUNT NOT ACCURATE -->
+</robot>

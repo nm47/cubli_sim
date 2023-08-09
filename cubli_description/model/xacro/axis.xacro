@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="axis">
+  <xacro:macro name="axis" params="prefix xyz rpy">
+    <link name="${prefix}_motor_mount">
+      <inertial>
+        <origin xyz="0.0 0.0 0.0"/>
+        <mass value="0.01043"/>
+        <inertia ixx="0.00000542" ixy="0.00000000" ixz="-0.00000000" iyy="0.00000071" iyz="0.00000049" izz="0.00000570"/>
+      </inertial>
+      <visual>
+        <origin xyz="0.0 0.0 0.0"/>
+        <geometry>
+          <mesh filename="package://cubli_description/model/meshes/motor_mount.stl"/>
+        </geometry>
+        <material name="silver"/>
+      </visual>
+        <origin xyz="0.0 0.0 0.0"/>
+    </link>
+
+    <link name="${prefix}_motor">
+      <inertial>
+        <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+        <mass value="0.114"/>
+        <inertia ixx="0.00003238" ixy="0.00000043" ixz="0.00000008" iyy="0.00002072" iyz="-0.00000285" izz="0.00003465"/>
+      </inertial>
+      <visual>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <geometry>
+          <mesh filename="package://cubli_description/model/meshes/ec45_flat.stl"/>
+        </geometry>
+        <material name="black"/>
+      </visual>
+    </link>
+  
+    <joint name="${prefix}_motor_to_motor_mount" type="fixed">
+      <parent link="${prefix}_motor_mount"/>
+      <child link="${prefix}_motor"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </joint>
+  
+    <joint name="${prefix}_motor_mount_to_base_link" type="fixed">
+      <parent link="base_link"/>
+      <child link="${prefix}_motor_mount"/>
+      <origin rpy="${rpy}" xyz="${xyz}"/>
+    </joint>
+
+    <link name="${prefix}_shaft_hub">
+      <inertial>
+        <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+        <mass value="0.003265"/>
+        <inertia ixx="0.00000008" ixy="-0.00000000" ixz="0.00000000" iyy="0.00000008" iyz="0.00000000" izz="0.00000015"/>
+
+      </inertial>
+      <visual>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <geometry>
+          <mesh filename="package://cubli_description/model/meshes/shaft_hub_mount.stl"/>
+        </geometry>
+        <material name="silver"/>
+      </visual>
+    </link>
+    <joint name="${prefix}_shaft_hub_to_motor" type="continuous">
+      <parent link="${prefix}_motor"/>
+      <child link="${prefix}_shaft_hub"/>
+      <axis xyz="0 0 1"/>
+      <origin rpy="0 0 0" xyz="0 0 .0061"/>
+    </joint>
+
+    <link name="${prefix}_flywheel">
+      <inertial>
+        <origin rpy="0 0 0" xyz="0.0 0.0 0.0005"/>
+        <mass value=".1074"/>
+        <inertia ixx="0.00009680" ixy="-0.00000000" ixz="0.00000000" iyy="0.00009680" iyz="0.00000000" izz="0.00019320"/>
+      </inertial>
+      <visual>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <geometry>
+          <mesh filename="package://cubli_description/model/meshes/flywheel.stl"/>
+        </geometry>
+        <material name="silver"/>
+      </visual>
+    </link>
+    <joint name="${prefix}_flywheel_to_shaft_hub" type="fixed">
+      <parent link="${prefix}_shaft_hub"/>
+      <child link="${prefix}_flywheel"/>
+      <origin rpy="0 0 0" xyz="0 0 0.005"/> <!--0.005 needs to be verified in CAD-->
+    </joint>
+  </xacro:macro>
+</robot>
